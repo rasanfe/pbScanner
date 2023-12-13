@@ -1,4 +1,4 @@
-# pbfileservice
+# pbScanner
 PowerBuilder Scanner (C# WIA)
 
 Ejemplo para usar el Scanner en PowerBuilder inspirado en el artículo:
