@@ -11,10 +11,13 @@ PDFdocument lpdf_doc
 PDFpage lpdf_page
 PDFImage lpdf_image
 Long ll_rtn
+Integer li_FormatLen
 
-ls_format = lower(mid(as_image, LastPos(as_image, "."),  4))
+li_FormatLen = Len(as_image) - LastPos(as_image, ".") + 1
 
-ls_pdf = replace(as_image, pos(as_image, ls_format), 4, ".pdf")
+ls_format = lower(mid(as_image, LastPos(as_image, "."),  li_FormatLen))
+
+ls_pdf = replace(as_image, pos(as_image, ls_format), li_FormatLen, ".pdf")
 	
 IF FileExists(ls_pdf) THEN FileDelete(ls_pdf)
 	
@@ -61,5 +64,7 @@ END IF
 DESTROY  lpdf_page 
 DESTROY lpdf_image
 DESTROY lpdf_doc
+
+RETURN ls_pdf
 end function
 

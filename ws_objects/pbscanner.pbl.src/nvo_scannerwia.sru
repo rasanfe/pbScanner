@@ -303,11 +303,11 @@ end function
 
 on nvo_scannerwia.create
 call super::create
-triggerevent( this, "constructor" )
+TriggerEvent( this, "constructor" )
 end on
 
 on nvo_scannerwia.destroy
-triggerevent( this, "destructor" )
+TriggerEvent( this, "destructor" )
 call super::destroy
 end on
 
