@@ -341,7 +341,7 @@ fontcharset fontcharset = ansi!
 fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Arial"
-string text = "Start san"
+string text = "Start scan"
 end type
 
 event clicked;String ls_filename, ls_format
