@@ -206,18 +206,14 @@ Integer li_device, li_devices
 
 wf_version(st_myversion, st_platform)
 
-
-
 in_wia =  CREATE  nvo_scannerwia
-
 
 ls_devices[] =  in_wia.of_ListScanners() 
 
 li_devices = UpperBound(ls_devices[])
 
 For li_device = 1 To li_devices
-	//IF lb_devices.FindItem (ls_devices[li_device], 0) > 0 THEN CONTINUE
-	lb_devices.AddItem(ls_devices[li_device])
+		lb_devices.AddItem(ls_devices[li_device])
 Next 	
 			
 lb_devices.SelectItem(1)
