@@ -13,6 +13,10 @@ Adapatado para funcionar en PowerBuilder.
 
 Como el repositorio original es una aplicación de Windows Forms, he recreado su interfaz en PowerBuilder. 
 
+Si quieres modificar el Proyecto Visual Studio este es el repositorio:
+
+https://github.com/rasanfe/ScannerWia.git
+
 Para estar al tanto de lo que publico puedes seguir mi blog:
 
 https://rsrsystem.blogspot.com/
