@@ -12,7 +12,7 @@ global nvo_scannerwia nvo_scannerwia
 type variables
 
 PUBLIC:
-String is_assemblypath = gs_dir+"ScannerWia.dll"
+String is_assemblypath = gs_dir+"bin\ScannerWia.dll"
 String is_classname = "ScannerWia.ScannerWia"
 
 /* Exception handling -- Indicates how proxy handles .NET exceptions */
@@ -50,6 +50,7 @@ public subroutine of_geterrorhandler (ref powerobject apo_currenthandler,ref str
 public subroutine of_reseterrorhandler ()
 public function any of_listscanners()
 public function string of_scan(string as_scanner,string as_format,string as_outputpath,string as_filename)
+public subroutine  of_convertimagetotxt(string as_imagepath,string as_txtpath,string as_datapath,string as_language)
 end prototypes
 
 event ue_error ( );
@@ -301,13 +302,48 @@ Catch(runtimeerror re_error)
 End Try
 end function
 
+public subroutine  of_convertimagetotxt(string as_imagepath,string as_txtpath,string as_datapath,string as_language);
+//*-----------------------------------------------------------------*/
+//*  .NET function : ConvertImageToTxt
+//*   Argument:
+//*              String as_imagepath
+//*              String as_txtpath
+//*              String as_datapath
+//*              String as_language
+//*   Return : (None)
+//*-----------------------------------------------------------------*/
+/* .NET  function name */
+String ls_function
+
+/* Set the dotnet function name */
+ls_function = "ConvertImageToTxt"
+
+Try
+	/* Create .NET object */
+	If Not This.of_createOnDemand( ) Then
+		Return 
+	End If
+
+	/* Trigger the dotnet function */
+	This.convertimagetotxt(as_imagepath,as_txtpath,as_datapath,as_language)
+Catch(runtimeerror re_error)
+
+	If This.ib_CrashOnException Then Throw re_error
+
+	/*   Handle .NET error */
+	This.of_SetDotNETError(ls_function, re_error.text)
+	This.of_SignalError( )
+
+End Try
+end subroutine
+
 on nvo_scannerwia.create
 call super::create
-TriggerEvent( this, "constructor" )
+triggerevent( this, "constructor" )
 end on
 
 on nvo_scannerwia.destroy
-TriggerEvent( this, "destructor" )
+triggerevent( this, "destructor" )
 call super::destroy
 end on
 

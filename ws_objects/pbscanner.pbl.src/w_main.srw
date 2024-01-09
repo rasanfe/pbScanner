@@ -274,7 +274,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Tahoma"
 boolean sorted = false
-string item[] = {"PNG","JPEG","BMP","GIF","TIFF","PDF"}
+string item[] = {"PNG","JPEG","BMP","GIF","TIFF","PDF","OCR"}
 borderstyle borderstyle = stylelowered!
 end type
 
