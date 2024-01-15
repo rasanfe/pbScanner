@@ -31,7 +31,9 @@ lpdf_image.x=0
 lpdf_image.y=0
 lpdf_image.height=842 //A4 height
 lpdf_image.width=595 //A4 Width
-lpdf_image.FitMethod = PDFImageFitmethod_Meet!
+//lpdf_image.FitMethod = PDFImageFitmethod_Clip!  //Ajustar la imagen con recorte.
+//lpdf_image.FitMethod = PDFImageFitmethod_Entire!  //Ajustar la imagen sin recorte.
+lpdf_image.FitMethod = PDFImageFitmethod_Meet!  //Ajustar la imagen con cambio de tamaño proporcional.
 		
 //Añadimos la Imagen Creada al Objeto PdfPage
 ll_rtn = lpdf_page.addcontent( lpdf_image)
