@@ -274,7 +274,7 @@ fontpitch fontpitch = variable!
 fontfamily fontfamily = swiss!
 string facename = "Tahoma"
 boolean sorted = false
-string item[] = {"PNG","JPEG","BMP","GIF","TIFF","PDF","OCR"}
+string item[] = {"PNG","JPEG","BMP","GIF","TIFF","PDF (Páginas múltiples)","PDF (Página única)","OCR"}
 borderstyle borderstyle = stylelowered!
 end type
 
@@ -341,29 +341,59 @@ string text = "Start scan"
 end type
 
 event clicked;String ls_filename, ls_format
-String ls_Scan, ls_device, ls_outputPath
+String ls_Scan[], ls_pdf[]
+String ls_device, ls_outputPath
+Integer li_docs
+Integer li_image, li_TotalImages
+n_cst_pdfservice ln_pdfsvc
 
 ls_device = lb_devices.SelectedItem()
 ls_format = ddlb_format.text
 ls_outputPath = sle_output.text
 ls_filename = sle_filename.text
 
-IF ls_format = "PDF" THEN
-	ls_format = "PNG"
-	ls_Scan = in_wia.of_Scan(ls_device, ls_format, ls_outputPath, ls_filename) 
-	ls_Scan = gf_ImageToPdf(ls_scan)
-ELSE
-	ls_Scan =  in_wia.of_Scan(ls_device, ls_format, ls_outputPath, ls_filename) 
-END IF	
+ln_pdfsvc =  Create n_cst_pdfservice
+
+CHOOSE CASE  ls_format
+	CASE "PDF (Páginas múltiples)" 
+		ls_format = "PNG"
+		ls_Scan[] = in_wia.of_Scan(ls_device, ls_format, ls_outputPath, ls_filename) 
+		li_TotalImages = UpperBound(ls_Scan[] )
+		If li_TotalImages > 0 Then
+			ls_pdf[1] = ln_pdfsvc.of_ImageArrayToPdf(ls_scan[])
+			ls_Scan[] = ls_pdf[]
+		End If	
+	CASE "PDF (Página única)" 
+		ls_format = "PNG"
+		ls_Scan[] = in_wia.of_Scan(ls_device, ls_format, ls_outputPath, ls_filename) 
+		li_TotalImages = UpperBound(ls_Scan[] )
+		//Por Cada Imagen Escaneada Generamos un PDF.
+		For li_image = 1 to li_TotalImages
+			ls_pdf[li_image] = ln_pdfsvc.of_ImageToPdf(ls_scan[li_image])
+		Next	
+		ls_Scan[] = ls_pdf[]
+	CASE ELSE
+		ls_Scan[] =  in_wia.of_Scan(ls_device, ls_format, ls_outputPath, ls_filename) 
+END CHOOSE
+
+Destroy ln_pdfsvc
 				
 //Checks the result
 If in_wia.il_ErrorType < 0 Then
-  messagebox("Failed", in_wia.is_ErrorText)
- wb_image.Navigate("")
-  Return
+	Messagebox("Error", in_wia.of_GetErrorText(), Exclamation!)
+	wb_image.Navigate("")
+	Return
 End If
 
-wb_image.Navigate(ls_Scan)
+//Navegamos a la Ultimo Documento
+li_docs = UpperBound(ls_Scan[])
+If li_docs > 0 Then
+	wb_image.Navigate(ls_Scan[li_docs])
+End If	
+
+
+
+
 
 
 end event

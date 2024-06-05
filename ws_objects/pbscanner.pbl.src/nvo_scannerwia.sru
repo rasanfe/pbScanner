@@ -49,8 +49,10 @@ private subroutine of_setassemblyerror (long al_errortype, string as_actiontext,
 public subroutine of_geterrorhandler (ref powerobject apo_currenthandler,ref string as_currentevent)
 public subroutine of_reseterrorhandler ()
 public function any of_listscanners()
-public function string of_scan(string as_scanner,string as_format,string as_outputpath,string as_filename)
+public function any of_scan(string as_scanner,string as_format,string as_outputpath,string as_filename)
 public subroutine  of_convertimagetotxt(string as_imagepath,string as_txtpath,string as_datapath,string as_language)
+public function string of_geterrortext()
+public function long of_getpagecount()
 end prototypes
 
 event ue_error ( );
@@ -261,7 +263,7 @@ Catch(runtimeerror re_error)
 End Try
 end function
 
-public function string of_scan(string as_scanner,string as_format,string as_outputpath,string as_filename);
+public function any of_scan(string as_scanner,string as_format,string as_outputpath,string as_filename);
 //*-----------------------------------------------------------------*/
 //*  .NET function : Scan
 //*   Argument:
@@ -269,11 +271,11 @@ public function string of_scan(string as_scanner,string as_format,string as_outp
 //*              String as_format
 //*              String as_outputpath
 //*              String as_filename
-//*   Return : String
+//*   Return : String[]
 //*-----------------------------------------------------------------*/
 /* .NET  function name */
 String ls_function
-String ls_result
+Any ls_result
 
 /* Set the dotnet function name */
 ls_function = "Scan"
@@ -336,6 +338,78 @@ Catch(runtimeerror re_error)
 
 End Try
 end subroutine
+
+public function string of_geterrortext();
+//*-----------------------------------------------------------------*/
+//*  .NET function : GetErrorText
+//*   Return : String
+//*-----------------------------------------------------------------*/
+/* .NET  function name */
+String ls_function
+String ls_result
+
+/* Set the dotnet function name */
+ls_function = "GetErrorText"
+
+Try
+	/* Create .NET object */
+	If Not This.of_createOnDemand( ) Then
+		SetNull(ls_result)
+		Return ls_result
+	End If
+
+	/* Trigger the dotnet function */
+	ls_result = This.geterrortext()
+	Return ls_result
+Catch(runtimeerror re_error)
+
+	If This.ib_CrashOnException Then Throw re_error
+
+	/*   Handle .NET error */
+	This.of_SetDotNETError(ls_function, re_error.text)
+	This.of_SignalError( )
+
+	/*  Indicate error occurred */
+	SetNull(ls_result)
+	Return ls_result
+End Try
+end function
+
+public function long of_getpagecount();
+//*-----------------------------------------------------------------*/
+//*  .NET function : GetPageCount
+//*   Return : Long
+//*-----------------------------------------------------------------*/
+/* .NET  function name */
+String ls_function
+Long ll_result
+
+/* Set the dotnet function name */
+ls_function = "GetPageCount"
+
+Try
+	/* Create .NET object */
+	If Not This.of_createOnDemand( ) Then
+		SetNull(ll_result)
+		Return ll_result
+	End If
+
+	/* Trigger the dotnet function */
+	ll_result = This.getpagecount()
+	Return ll_result
+Catch(runtimeerror re_error)
+
+	If This.ib_CrashOnException Then Throw re_error
+
+	/*   Handle .NET error */
+	This.of_SetDotNETError(ls_function, re_error.text)
+	This.of_SignalError( )
+
+	/*  Indicate error occurred */
+	SetNull(ll_result)
+	Return ll_result
+End Try
+end function
 
 on nvo_scannerwia.create
 call super::create
