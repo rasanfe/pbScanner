@@ -356,7 +356,7 @@ ln_pdfsvc =  Create n_cst_pdfservice
 
 CHOOSE CASE  ls_format
 	CASE "PDF (Páginas múltiples)" 
-		ls_format = "PNG"
+		ls_format = "JPEG"
 		ls_Scan[] = in_wia.of_Scan(ls_device, ls_format, ls_outputPath, ls_filename) 
 		li_TotalImages = UpperBound(ls_Scan[] )
 		If li_TotalImages > 0 Then
@@ -364,7 +364,7 @@ CHOOSE CASE  ls_format
 			ls_Scan[] = ls_pdf[]
 		End If	
 	CASE "PDF (Página única)" 
-		ls_format = "PNG"
+		ls_format = "JPEG"
 		ls_Scan[] = in_wia.of_Scan(ls_device, ls_format, ls_outputPath, ls_filename) 
 		li_TotalImages = UpperBound(ls_Scan[] )
 		//Por Cada Imagen Escaneada Generamos un PDF.
