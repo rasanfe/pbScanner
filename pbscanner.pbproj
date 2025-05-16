@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Project>
+  <Type Name="pb"/>
+  <Application Name="pbscanner"/>
+  <Libraries AppEntry="pbscanner.pbl">
+    <Library Path="pbscanner.pbl"/>
+    <Library Path="dotnet.pbl"/>
+  </Libraries>
+</Project>
